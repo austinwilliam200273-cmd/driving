@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Pothole Patrol</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #0f172a;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    #game {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* touch-action:none keeps the browser from hijacking touch gestures for scroll/zoom */
+    canvas { touch-action: none; display: block; }
+  </style>
+  <!-- Phaser 3 via CDN — no npm/build step required -->
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+</head>
+<body>
+  <div id="game"></div>
+  <!-- ES module entry point. NOTE: ES modules require the page to be *served* (http://),
+       so use `npx serve .` rather than opening the file via file:// -->
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

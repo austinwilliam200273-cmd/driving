@@ -1,0 +1,13 @@
+<!--
+  CrazyGames SDK loader.
+
+  Paste this <script> line into the Godot Web export preset:
+    Project > Export... > Web > HTML > "Head Include"
+  (or into the <head> of a custom HTML shell).
+
+  scripts/crazy_sdk.gd (the CrazySDK autoload) calls window.CrazyGames.SDK at
+  runtime; this tag is what puts that object on the page. On CrazyGames' own
+  hosting the SDK is injected automatically, but including it here also lets you
+  test locally and on other hosts.
+-->
+<script src="https://sdk.crazygames.com/crazygames-sdk-v3.js"></script>

@@ -1,0 +1,11 @@
+# Godot editor cache (regenerated on open)
+godot/.godot/
+
+# Generated web export + upload package (rebuild with the "Web" export preset)
+godot/build/
+*.zip
+
+# OS cruft
+Thumbs.db
+.DS_Store
+desktop.ini
