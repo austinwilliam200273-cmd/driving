@@ -163,10 +163,12 @@ func _demo_steer() -> int:
 				if ln >= 0 and ln < Consts.LANES and not blocked[ln] and not found:
 					target_lane = ln
 					found = true
+	# Deadband must exceed one frame of lateral travel (~20px at 30fps),
+	# otherwise the car overshoots the lane centre and jitters left/right.
 	var tx: float = Consts.LANE_CENTERS[target_lane]
-	if player.position.x > tx + 6.0:
+	if player.position.x > tx + 26.0:
 		return -1
-	elif player.position.x < tx - 6.0:
+	elif player.position.x < tx - 26.0:
 		return 1
 	return 0
 
