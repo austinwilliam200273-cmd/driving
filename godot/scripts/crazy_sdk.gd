@@ -11,12 +11,13 @@ func _ready() -> void:
 	if OS.has_feature("web"):
 		available = true
 		# Defer init: let the game render first, then talk to the SDK.
-		var t := get_tree().create_timer(0.5)
+		var t := get_tree().create_timer(0.1)
 		t.timeout.connect(_init_sdk)
 
 func _init_sdk() -> void:
+	# The SDK <script> is loaded async, so keep retrying until it's there.
 	# init() is async — await it, THEN report loading finished (avoids a race).
-	_call("(async()=>{try{if(window.CrazyGames&&window.CrazyGames.SDK&&!window.__cg_inited){window.__cg_inited=true;await window.CrazyGames.SDK.init();window.CrazyGames.SDK.game.loadingStop();}}catch(e){console.error('CG',e);}})()")
+	_call("(function __cgTry(){try{if(window.__cg_inited){return;}if(window.CrazyGames&&window.CrazyGames.SDK){window.__cg_inited=true;window.CrazyGames.SDK.init().then(function(){window.CrazyGames.SDK.game.loadingStop();}).catch(function(e){console.error('CG init',e);});}else{setTimeout(__cgTry,300);}}catch(e){console.error('CG',e);}})()")
 
 func _call(js: String) -> void:
 	if not available:
