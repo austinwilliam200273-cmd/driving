@@ -62,6 +62,12 @@ autoload). It no-ops on desktop and, on a Web export, calls
 - `gameplayStop()` on game over
 - `happytime()` on new car unlocks and mission completions
 - `loadingStop()` once the menu is ready
+- `ad.requestAd("midgame")` when leaving the game-over screen (RETRY/MENU),
+  at most once per 3 minutes — the natural between-runs break
+- `ad.requestAd("rewarded")` behind an opt-in "WATCH AD — DOUBLE SCORE"
+  button on the game-over screen (web only; hidden on desktop)
+- the master bus is muted while any ad plays and restored to the user's
+  sound setting afterwards (CrazyGames requirement)
 
 A ready-to-use **`export_presets.cfg`** ("Web" preset) is already included, with:
 
@@ -93,9 +99,7 @@ Notes for approval:
 - `Q` steers left so AZERTY (ZQSD) keyboards work without rebinding; Escape is
   never used in-game (it exits fullscreen on web).
 - The SDK calls fire from `crazy_sdk.gd`; test them with the CrazyGames QA tool
-  after upload.
-- To add ads later, call the SDK's `ad.requestAd(...)` from `crazy_sdk.gd`
-  (mute around the call) — left out for now to keep the build dependency-free.
+  after upload (the ads panel there lets you trigger test midgame/rewarded ads).
 
 ## File map
 

@@ -1,12 +1,24 @@
 # GameOverScreen: final score, persistent high score, run stats, any car you
 # unlocked this run, and buttons to replay or return to the menu.
+# Monetisation hooks: an opt-in rewarded ad doubles the run score, and leaving
+# the screen (RETRY / MENU) may show a midgame break ad (cooldown-limited).
 extends CanvasLayer
 class_name GameOverScreen
+
+const CARD_W := 680.0
+
+var _cur_score := 0
+var _score_big: Label
+var _best_line: Label
+var _double_btn: Button
+var _busy := false  # an ad is playing — ignore clicks until it resolves
 
 func _ready() -> void:
 	layer = 10  # above HUD
 
 func setup(data: Dictionary) -> void:
+	_cur_score = data.score
+
 	# dim background
 	var dim := ColorRect.new()
 	dim.color = Color(0.06, 0.09, 0.16, 0.78)
@@ -21,18 +33,18 @@ func setup(data: Dictionary) -> void:
 		SaveData.set_high(high)
 
 	# centered card
-	var pw := 680.0
+	var pw := CARD_W
 	var px := (Consts.GAME_W - pw) / 2.0
-	var card := UiKit.panel(self, Vector2(px, 46), Vector2(pw, 560), Color(0.10, 0.14, 0.21, 0.94), 26.0)
+	var card := UiKit.panel(self, Vector2(px, 30), Vector2(pw, 636), Color(0.10, 0.14, 0.21, 0.94), 26.0)
 
-	_centered(card, "GAME OVER", 24, 56, Color(0.98, 0.45, 0.09), pw)
-	_centered(card, "SCORE", 100, 24, Color(0.80, 0.84, 0.90), pw)
-	_centered(card, str(data.score), 128, 72, Color.WHITE, pw)
-	_centered(card, ("NEW BEST!  " if new_best else "HIGH SCORE  ") + str(high), 216, 26,
+	_centered(card, "GAME OVER", 22, 54, Color(0.98, 0.45, 0.09), pw)
+	_centered(card, "SCORE", 94, 24, Color(0.80, 0.84, 0.90), pw)
+	_score_big = _centered(card, str(data.score), 122, 72, Color.WHITE, pw)
+	_best_line = _centered(card, ("NEW BEST!  " if new_best else "HIGH SCORE  ") + str(high), 210, 26,
 		Consts.TEXT_GOLD if new_best else Color(0.58, 0.64, 0.72), pw)
 
 	# car unlocked / collected this run
-	var y := 262.0
+	var y := 254.0
 	var cid: String = data.get("crashed_id", "")
 	if cid != "":
 		var m := CarCatalog.get_by_id(cid)
@@ -55,13 +67,18 @@ func setup(data: Dictionary) -> void:
 	if extra != "":
 		_centered(card, extra, y + 34, 22, Color(0.55, 0.85, 0.60), pw)
 
+	# rewarded ad: double this run's score (web only — hidden on desktop)
+	if CrazySDK.available and data.score > 0:
+		_double_btn = UiKit.button(card, "WATCH AD  —  DOUBLE SCORE", Vector2(pw / 2 - 280, 418), Vector2(560, 62), 26, false)
+		_double_btn.pressed.connect(_on_double)
+
 	# buttons side by side
-	var again := UiKit.button(card, "RETRY", Vector2(pw / 2 - 300, 428), Vector2(290, 92), 40)
+	var again := UiKit.button(card, "RETRY", Vector2(pw / 2 - 300, 500), Vector2(290, 90), 40)
 	again.pressed.connect(_play_again)
-	var menu := UiKit.button(card, "MENU", Vector2(pw / 2 + 10, 428), Vector2(290, 92), 40, false)
+	var menu := UiKit.button(card, "MENU", Vector2(pw / 2 + 10, 500), Vector2(290, 90), 40, false)
 	menu.pressed.connect(_menu)
 
-	_centered(card, "SPACE / ENTER = retry", 528, 20, Color(0.58, 0.64, 0.72), pw)
+	_centered(card, "SPACE / ENTER = retry", 600, 20, Color(0.58, 0.64, 0.72), pw)
 
 func _centered(parent: Node, text: String, y: float, fsize: int, color: Color, w: float) -> Label:
 	var l := Label.new()
@@ -75,13 +92,44 @@ func _centered(parent: Node, text: String, y: float, fsize: int, color: Color, w
 	parent.add_child(l)
 	return l
 
+# ---- rewarded ad: double score ----
+func _on_double() -> void:
+	if _busy:
+		return
+	_busy = true
+	_double_btn.disabled = true
+	CrazySDK.rewarded(_after_rewarded)
+
+func _after_rewarded(ok: bool) -> void:
+	_busy = false
+	if not ok:
+		_double_btn.text = "AD NOT AVAILABLE"
+		return
+	_cur_score *= 2
+	_score_big.text = str(_cur_score)
+	_double_btn.queue_free()
+	_double_btn = null
+	if _cur_score > SaveData.get_high():
+		SaveData.set_high(_cur_score)
+		_best_line.text = "NEW BEST!  %d" % _cur_score
+		_best_line.add_theme_color_override("font_color", Consts.TEXT_GOLD)
+
+# ---- leave the screen (with an occasional midgame break ad) ----
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_SPACE or event.keycode == KEY_ENTER:
 			_play_again()
 
 func _play_again() -> void:
-	get_tree().change_scene_to_file("res://scenes/Game.tscn")
+	if _busy:
+		return
+	_busy = true
+	CrazySDK.maybe_midgame(func(_shown: bool) -> void:
+		get_tree().change_scene_to_file("res://scenes/Game.tscn"))
 
 func _menu() -> void:
-	get_tree().change_scene_to_file("res://scenes/Menu.tscn")
+	if _busy:
+		return
+	_busy = true
+	CrazySDK.maybe_midgame(func(_shown: bool) -> void:
+		get_tree().change_scene_to_file("res://scenes/Menu.tscn"))
