@@ -8,11 +8,9 @@ const W := 64.0
 const H := 104.0
 
 var half := Vector2(W / 2.0, H / 2.0)
-var lateral_speed := 560.0
+var lateral_speed := 620.0
 var speed_mod := 1.0
 var _mod_timer := 0.0
-var winding_up := false
-var _pending_cb: Callable
 var model: Dictionary = {}  # which car the player drives
 var anim := false           # animated paint (color cycle / moving decals)
 var t := 0.0
@@ -34,22 +32,6 @@ func steer(dir: int, dt: float) -> void:
 	position.x = clamp(position.x + dir * lateral_speed * dt,
 		Consts.ROAD_X + half.x, Consts.ROAD_RIGHT - half.x)
 	rotation = lerp_angle(rotation, deg_to_rad(dir * 8), 0.2)
-
-# 0.25s smash wind-up (squash), then run the callback to drop the crater.
-func windup(cb: Callable) -> void:
-	if winding_up:
-		return
-	winding_up = true
-	_pending_cb = cb
-	var t := create_tween()
-	t.tween_property(self, "scale", Vector2(1.3, 0.7), 0.12)
-	t.tween_property(self, "scale", Vector2(1, 1), 0.12)
-	t.tween_callback(_finish_windup)
-
-func _finish_windup() -> void:
-	winding_up = false
-	if _pending_cb.is_valid():
-		_pending_cb.call()
 
 func bounce() -> void:
 	var t := create_tween()

@@ -60,7 +60,18 @@ func collect() -> void:
 	_tone(1320, 0.16, "square", 0.3, 0)
 
 func game_over() -> void:
-	_tone(400, 0.6, "saw", 0.32, 80)
+	_tone(400, 0.6, "saw", 0.28, 80)
+
+# Pothole patched: a soft asphalt thump + a bright little ding.
+func patch() -> void:
+	_tone(90, 0.09, "sine", 0.55, 55)
+	_tone(880, 0.09, "tri", 0.22, 1175)
+
+# Mission complete: short triumphant arpeggio.
+func mission() -> void:
+	for f in [523.0, 659.0, 784.0, 1047.0]:
+		_tone(f, 0.14, "tri", 0.28, 0)
+		await get_tree().create_timer(0.08).timeout
 
 func ui_click() -> void:
 	_tone(520, 0.05, "square", 0.22, 720)
@@ -125,14 +136,25 @@ func _build_music() -> AudioStreamWAV:
 	var n := int(RATE * total_beats * beat)
 	var buf := PackedFloat32Array()
 	buf.resize(n)
-	_render_track(buf, melody, beat, "square", 0.26)
-	_render_track(buf, bass, beat, "tri", 0.24)
+	# two slightly detuned triangle voices instead of a raw square — warmer lead
+	_render_track(buf, melody, beat, "tri", 0.22, 1.0)
+	_render_track(buf, melody, beat, "tri", 0.11, 1.006)
+	_render_track(buf, bass, beat, "sine", 0.30, 1.0)
 	_add_percussion(buf, beat, total_beats)
+
+	# gentle one-pole low-pass to soften the digital edge, then normalise
+	var lp := 0.0
+	var peak := 0.001
+	for i in n:
+		lp += 0.55 * (buf[i] - lp)
+		buf[i] = lp
+		peak = max(peak, abs(lp))
+	var norm: float = 0.85 / peak
 
 	var bytes := PackedByteArray()
 	bytes.resize(n * 2)
 	for i in n:
-		bytes.encode_s16(i * 2, int(clamp(buf[i], -1.0, 1.0) * 32767.0))
+		bytes.encode_s16(i * 2, int(clamp(buf[i] * norm, -1.0, 1.0) * 32767.0))
 
 	var wav := AudioStreamWAV.new()
 	wav.format = AudioStreamWAV.FORMAT_16_BITS
@@ -177,10 +199,10 @@ func _add_hit(buf: PackedFloat32Array, start_idx: int, dur: float, kind: String,
 				s = (randf() * 2.0 - 1.0) * exp(-t * 60.0)
 		buf[idx] += s * vol
 
-func _render_track(buf: PackedFloat32Array, track: Array, beat: float, type: String, vol: float) -> void:
+func _render_track(buf: PackedFloat32Array, track: Array, beat: float, type: String, vol: float, detune := 1.0) -> void:
 	var pos := 0
 	for note in track:
-		var f: float = note[0]
+		var f: float = note[0] * detune
 		var dur: float = note[1] * beat
 		var ns := int(dur * RATE)
 		var phase := 0.0

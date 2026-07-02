@@ -34,25 +34,30 @@ static func cars() -> Array:
 		{"id": "racer", "name": "Race Car", "color": Color(0.93, 0.95, 0.98), "rarity": "Epic", "chance": 0.7, "special": "race", "accent": Color(0.85, 0.15, 0.15)},
 		{"id": "toxic", "name": "Toxic", "color": Color(0.45, 0.85, 0.10), "rarity": "Epic", "chance": 0.8, "special": "neon", "accent": Color(0.70, 1.0, 0.20)},
 		# Legendary
-		{"id": "diamond", "name": "Diamondback", "color": Color(0.35, 0.85, 0.92), "rarity": "Legendary", "chance": 0.4, "special": "diamond"},
-		{"id": "golden", "name": "Golden Cruiser", "color": Color(0.95, 0.78, 0.18), "rarity": "Legendary", "chance": 0.3, "special": "gold", "accent": Color(1.0, 0.92, 0.55)},
-		{"id": "chrome", "name": "Chrome Bullet", "color": Color(0.78, 0.80, 0.85), "rarity": "Legendary", "chance": 0.22, "special": "chrome"},
-		{"id": "onyx", "name": "Onyx", "color": Color(0.10, 0.10, 0.13), "rarity": "Legendary", "chance": 0.28, "special": "chrome"},
+		{"id": "diamond", "name": "Diamondback", "color": Color(0.35, 0.85, 0.92), "rarity": "Legendary", "chance": 0.6, "special": "diamond"},
+		{"id": "golden", "name": "Golden Cruiser", "color": Color(0.95, 0.78, 0.18), "rarity": "Legendary", "chance": 0.5, "special": "gold", "accent": Color(1.0, 0.92, 0.55)},
+		{"id": "chrome", "name": "Chrome Bullet", "color": Color(0.78, 0.80, 0.85), "rarity": "Legendary", "chance": 0.45, "special": "chrome"},
+		{"id": "onyx", "name": "Onyx", "color": Color(0.10, 0.10, 0.13), "rarity": "Legendary", "chance": 0.5, "special": "chrome"},
 		# Mythic
-		{"id": "phantom", "name": "Phantom", "color": Color(0.85, 0.90, 1.0), "rarity": "Mythic", "chance": 0.12, "special": "ghost"},
-		{"id": "neon", "name": "Neon Rider", "color": Color(0.95, 0.15, 0.75), "rarity": "Mythic", "chance": 0.08, "special": "neon"},
-		{"id": "rainbow", "name": "Rainbow Racer", "color": Color(1, 1, 1), "rarity": "Mythic", "chance": 0.05, "special": "rainbow"},
-		{"id": "prism", "name": "Prism", "color": Color(0.90, 0.90, 0.95), "rarity": "Mythic", "chance": 0.06, "special": "chromatic"},
+		{"id": "phantom", "name": "Phantom", "color": Color(0.85, 0.90, 1.0), "rarity": "Mythic", "chance": 0.3, "special": "ghost"},
+		{"id": "neon", "name": "Neon Rider", "color": Color(0.95, 0.15, 0.75), "rarity": "Mythic", "chance": 0.25, "special": "neon"},
+		{"id": "rainbow", "name": "Rainbow Racer", "color": Color(1, 1, 1), "rarity": "Mythic", "chance": 0.2, "special": "rainbow"},
+		{"id": "prism", "name": "Prism", "color": Color(0.90, 0.90, 0.95), "rarity": "Mythic", "chance": 0.22, "special": "chromatic"},
 		# Exotic
-		{"id": "galaxy", "name": "Galaxy Glider", "color": Color(0.10, 0.10, 0.28), "rarity": "Exotic", "chance": 0.02, "special": "galaxy"},
-		{"id": "aurora", "name": "Aurora", "color": Color(0.10, 0.55, 0.55), "rarity": "Exotic", "chance": 0.012, "special": "neon", "accent": Color(0.4, 1.0, 0.6)},
-		{"id": "chromatic", "name": "Chromatic", "color": Color(0.8, 0.2, 0.9), "rarity": "Exotic", "chance": 0.010, "special": "chromatic"},
-		{"id": "hologram", "name": "Hologram", "color": Color(0.14, 0.40, 0.62), "rarity": "Exotic", "chance": 0.007, "special": "holo"},
-		{"id": "comet", "name": "Comet", "color": Color(0.08, 0.06, 0.22), "rarity": "Exotic", "chance": 0.009, "special": "galaxy"},
-		# Secret (incredibly rare)
-		{"id": "glitch", "name": "G̷l̴i̶t̷c̸h", "color": Color(0.05, 0.9, 0.7), "rarity": "Secret", "chance": 0.005, "special": "glitch"},
-		{"id": "pulsar", "name": "Pulsar", "color": Color(0.98, 0.20, 0.55), "rarity": "Secret", "chance": 0.003, "special": "pulsar"},
-		{"id": "developer", "name": "Dev Car", "color": Color(0.12, 0.12, 0.14), "rarity": "Secret", "chance": 0.002, "special": "two_tone", "accent": Color(0.0, 0.9, 0.4)},
+		{"id": "galaxy", "name": "Galaxy Glider", "color": Color(0.10, 0.10, 0.28), "rarity": "Exotic", "chance": 0.14, "special": "galaxy"},
+		{"id": "aurora", "name": "Aurora", "color": Color(0.10, 0.55, 0.55), "rarity": "Exotic", "chance": 0.12, "special": "neon", "accent": Color(0.4, 1.0, 0.6)},
+		{"id": "chromatic", "name": "Chromatic", "color": Color(0.8, 0.2, 0.9), "rarity": "Exotic", "chance": 0.10, "special": "chromatic"},
+		{"id": "hologram", "name": "Hologram", "color": Color(0.14, 0.40, 0.62), "rarity": "Exotic", "chance": 0.09, "special": "holo"},
+		{"id": "comet", "name": "Comet", "color": Color(0.08, 0.06, 0.22), "rarity": "Exotic", "chance": 0.10, "special": "galaxy"},
+		# Secret (the long chase — still reachable in a good session streak)
+		{"id": "glitch", "name": "G̷l̴i̶t̷c̸h", "color": Color(0.05, 0.9, 0.7), "rarity": "Secret", "chance": 0.07, "special": "glitch"},
+		{"id": "pulsar", "name": "Pulsar", "color": Color(0.98, 0.20, 0.55), "rarity": "Secret", "chance": 0.06, "special": "pulsar"},
+		{"id": "developer", "name": "Dev Car", "color": Color(0.12, 0.12, 0.14), "rarity": "Secret", "chance": 0.05, "special": "two_tone", "accent": Color(0.0, 0.9, 0.4)},
+		# Ultimate (the months-long chase — spotting one on the road is an event)
+		{"id": "midas", "name": "King Midas", "color": Color(0.85, 0.65, 0.10), "rarity": "Ultimate", "chance": 0.02, "special": "gold", "accent": Color(1.0, 0.95, 0.60)},
+		{"id": "phoenix", "name": "Phoenix", "color": Color(0.55, 0.10, 0.05), "rarity": "Ultimate", "chance": 0.012, "special": "flame", "accent": Color(1.0, 0.45, 0.05)},
+		{"id": "eclipse", "name": "Eclipse", "color": Color(0.05, 0.05, 0.10), "rarity": "Ultimate", "chance": 0.009, "special": "galaxy"},
+		{"id": "void", "name": "The Void", "color": Color(0.03, 0.02, 0.08), "rarity": "Ultimate", "chance": 0.005, "special": "void"},
 	]
 
 static func get_by_id(id: String) -> Dictionary:
@@ -115,11 +120,12 @@ static func rarity_color(r: String) -> Color:
 		"Mythic": return Color(0.96, 0.30, 0.56)
 		"Exotic": return Color(0.10, 0.85, 0.85)
 		"Secret": return Color(1.0, 0.25, 0.35)
+		"Ultimate": return Color(0.78, 0.62, 1.0)
 		_: return Color(0.85, 0.85, 0.88)
 
 # Cars whose look animates each frame (color cycling / moving decals).
 static func is_animated(special: String) -> bool:
-	return special in ["chromatic", "holo", "pulsar", "rainbow"]
+	return special in ["chromatic", "holo", "pulsar", "rainbow", "void"]
 
 # ---- drawing helpers ----
 static func _rrect(ci: CanvasItem, x: float, y: float, w: float, h: float, r: float, col: Color) -> void:
@@ -160,13 +166,16 @@ static func draw_car(ci: CanvasItem, m: Dictionary, w: float, h: float, _is_play
 	var outline := bc.darkened(0.4)
 	outline.a = alpha
 
-	# shadow + wheels (with hubcaps)
-	_rrect(ci, -hw + 5, -hh + 8, w, h, 12, Consts.SHADOW)
-	for wy in [-hh + 16, hh - 44]:
-		ci.draw_rect(Rect2(-hw - 3, wy, 8, 28), Consts.WHEEL)
-		ci.draw_rect(Rect2(hw - 5, wy, 8, 28), Consts.WHEEL)
-		ci.draw_circle(Vector2(-hw + 1, wy + 14), 2.5, Color(0.55, 0.55, 0.6))
-		ci.draw_circle(Vector2(hw - 1, wy + 14), 2.5, Color(0.55, 0.55, 0.6))
+	# soft drop shadow (two layers) + wheels (tires with hubcaps)
+	_rrect(ci, -hw + 3, -hh + 6, w + 4, h + 4, 14, Color(0, 0, 0, 0.10))
+	_rrect(ci, -hw + 5, -hh + 9, w, h, 12, Color(0, 0, 0, 0.14))
+	for wy in [-hh + 14, hh - 46]:
+		ci.draw_rect(Rect2(-hw - 4, wy, 9, 32), Consts.WHEEL)
+		ci.draw_rect(Rect2(hw - 5, wy, 9, 32), Consts.WHEEL)
+		ci.draw_rect(Rect2(-hw - 4, wy + 2, 3, 28), Color(0.20, 0.22, 0.28))
+		ci.draw_rect(Rect2(hw + 1, wy + 2, 3, 28), Color(0.20, 0.22, 0.28))
+		ci.draw_circle(Vector2(-hw + 1, wy + 16), 3.0, Color(0.55, 0.55, 0.6))
+		ci.draw_circle(Vector2(hw - 1, wy + 16), 3.0, Color(0.55, 0.55, 0.6))
 
 	# glow (neon / pulsar)
 	if special == "neon":
@@ -174,6 +183,9 @@ static func draw_car(ci: CanvasItem, m: Dictionary, w: float, h: float, _is_play
 	elif special == "pulsar":
 		var pg := 0.18 + 0.22 * (0.5 + 0.5 * sin(t * 6.0))
 		ci.draw_rect(Rect2(-hw - 8, -hh - 8, w + 16, h + 16), Color(body.r, body.g, body.b, pg))
+	elif special == "void":
+		var vg := 0.15 + 0.15 * (0.5 + 0.5 * sin(t * 2.5))
+		ci.draw_rect(Rect2(-hw - 8, -hh - 8, w + 16, h + 16), Color(0.45, 0.20, 0.85, vg))
 
 	# body (rounded, with outline)
 	_rrect(ci, -hw, -hh, w, h, 12, outline)
@@ -185,6 +197,11 @@ static func draw_car(ci: CanvasItem, m: Dictionary, w: float, h: float, _is_play
 			ci.draw_rect(Rect2(-hw + 2, -hh + 2 + i * bh, w - 4, bh + 1), Color.from_hsv(hue, 0.85, 0.95, alpha))
 	else:
 		_rrect(ci, -hw + 2, -hh + 2, w - 4, h - 4, 11, bc)
+
+	# body shading: lit down the middle, shaded at the sills (reads as curvature)
+	ci.draw_rect(Rect2(-hw + 8, -hh + 4, 5, h - 8), Color(1, 1, 1, 0.16 * alpha))
+	ci.draw_rect(Rect2(-hw + 2, -hh + 6, 3, h - 12), Color(0, 0, 0, 0.13 * alpha))
+	ci.draw_rect(Rect2(hw - 5, -hh + 6, 3, h - 12), Color(0, 0, 0, 0.13 * alpha))
 
 	# cabin / cargo
 	if special == "van":
@@ -238,10 +255,31 @@ static func draw_car(ci: CanvasItem, m: Dictionary, w: float, h: float, _is_play
 				ci.draw_circle(Vector2(px, py), 1.6, Color(1, 1, 1, 0.9))
 			ci.draw_circle(Vector2(hw * 0.3, -hh * 0.3), 3, Color(0.6, 0.8, 1.0))
 			ci.draw_circle(Vector2(-hw * 0.4, hh * 0.2), 2.5, Color(1.0, 0.7, 0.9))
+		"void":
+			# a slowly swirling accretion ring around a black centre
+			ci.draw_circle(Vector2.ZERO, hw * 0.62, Color(0.30, 0.12, 0.55, 0.6))
+			ci.draw_circle(Vector2.ZERO, hw * 0.42, Color(0, 0, 0, 0.95))
+			ci.draw_arc(Vector2.ZERO, hw * 0.55, t * 2.0, t * 2.0 + PI * 1.3, 20,
+				Color(0.75, 0.45, 1.0, 0.9), 3.0)
+			ci.draw_arc(Vector2.ZERO, hw * 0.72, -t * 1.3, -t * 1.3 + PI * 0.9, 16,
+				Color(0.45, 0.85, 1.0, 0.7), 2.0)
+			for i in 3:
+				var oa := t * 1.6 + TAU * i / 3.0
+				ci.draw_circle(Vector2(cos(oa), sin(oa)) * hw * 0.62, 2.2, Color(0.9, 0.8, 1.0))
 
-	# windows
-	ci.draw_rect(Rect2(-hw + 10, -hh + 8, w - 20, 18), Consts.WINDOW)
-	ci.draw_rect(Rect2(-hw + 10, -hh + 8, w - 20, 5), Consts.WINDOW.lightened(0.3))  # glass shine
+	# windshield (trapezoid glass with a diagonal shine) + rear window
+	var wsc := Consts.WINDOW
+	wsc.a = 0.85 * alpha
+	ci.draw_colored_polygon(PackedVector2Array([
+		Vector2(-hw + 12, -hh + 26), Vector2(hw - 12, -hh + 26),
+		Vector2(hw - 9, -hh + 8), Vector2(-hw + 9, -hh + 8)]), wsc)
+	ci.draw_colored_polygon(PackedVector2Array([
+		Vector2(-hw + 11, -hh + 12), Vector2(-hw + 22, -hh + 10),
+		Vector2(-hw + 15, -hh + 24), Vector2(-hw + 11, -hh + 24)]),
+		Color(1, 1, 1, 0.30 * alpha))
+	# side mirrors
+	ci.draw_rect(Rect2(-hw - 6, -hh + 26, 7, 9), outline)
+	ci.draw_rect(Rect2(hw - 1, -hh + 26, 7, 9), outline)
 	if special in ["", "stripe", "two_tone", "taxi", "police", "gold", "chrome", "diamond", "neon", "ambulance", "race", "ghost", "glitch", "galaxy", "flame", "rainbow", "chromatic", "holo", "pulsar"]:
 		ci.draw_rect(Rect2(-hw + 12, -hh + 58, w - 24, 12), Consts.WINDOW.lightened(0.1))
 
@@ -260,7 +298,9 @@ static func draw_car(ci: CanvasItem, m: Dictionary, w: float, h: float, _is_play
 			ci.draw_circle(Vector2(0, -2), 11, Color(1, 1, 1))
 			ci.draw_arc(Vector2(0, -2), 11, 0, TAU, 18, Color(0.1, 0.1, 0.1), 2.0)
 
-	# lights
+	# lights (headlights get a faint forward glow)
+	ci.draw_circle(Vector2(-hw + 10, -hh - 2), 8, Color(1, 0.96, 0.65, 0.18 * alpha))
+	ci.draw_circle(Vector2(hw - 10, -hh - 2), 8, Color(1, 0.96, 0.65, 0.18 * alpha))
 	ci.draw_rect(Rect2(-hw + 5, -hh + 1, 11, 6), Consts.HEADLIGHT)
 	ci.draw_rect(Rect2(hw - 16, -hh + 1, 11, 6), Consts.HEADLIGHT)
 	ci.draw_rect(Rect2(-hw + 5, hh - 7, 11, 6), Consts.TAILLIGHT)

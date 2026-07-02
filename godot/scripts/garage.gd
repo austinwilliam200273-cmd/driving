@@ -1,8 +1,9 @@
-# Garage: browse cars, see how rare each one is, and select an owned car.
+# Garage (landscape): browse cars on the left, details + SELECT on the right.
 # Locked cars show a silhouette + drop rate so you know what to chase.
-# Reached from the main menu's CHANGE CAR button; BACK returns to the menu.
 extends Node2D
 class_name Garage
+
+const CAR_X := 380.0
 
 var index := 0
 var preview: CarPreview
@@ -10,76 +11,59 @@ var _name_label: Label
 var _rarity_label: Label
 var _status_label: Label
 var _count_label: Label
+var _select_btn: Button
 
 func _ready() -> void:
 	index = max(0, CarCatalog.index_of(SaveData.get_selected()))
 	SaveData.apply_mute()
 
-	var bg := ColorRect.new()
-	bg.color = Consts.SKY
-	bg.size = Vector2(Consts.GAME_W, Consts.GAME_H)
-	add_child(bg)
+	UiKit.sky_background(self)
+
+	var grass := ColorRect.new()
+	grass.color = Consts.GRASS
+	grass.position = Vector2(0, 250)
+	grass.size = Vector2(Consts.GAME_W, Consts.GAME_H - 250)
+	grass.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(grass)
 
 	var strip := ColorRect.new()
 	strip.color = Consts.ROAD
-	strip.position = Vector2(Consts.GAME_W / 2 - 150, 340)
-	strip.size = Vector2(300, 360)
+	strip.position = Vector2(CAR_X - 130, 150)
+	strip.size = Vector2(260, Consts.GAME_H - 150)
+	strip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(strip)
 
-	_title("GARAGE", 120, 60, Color(0.20, 0.30, 0.45))
-	_count_label = _label("", Vector2(0, 210), 28, Color(0.30, 0.40, 0.52), true)
+	UiKit.title(self, "GARAGE", Vector2(0, 22), 60, Color(0.20, 0.30, 0.45), Consts.GAME_W)
+	_count_label = UiKit.label(self, "", Vector2(0, 100), 26, Color(0.26, 0.36, 0.50), Consts.GAME_W)
 
 	preview = CarPreview.new()
-	preview.position = Vector2(Consts.GAME_W / 2, 520)
-	preview.scale = Vector2(2.4, 2.4)
+	preview.position = Vector2(CAR_X, 420)
+	preview.scale = Vector2(2.8, 2.8)
 	add_child(preview)
 
-	var prev := _button("<", Vector2(40, 460), Vector2(110, 120), 50)
+	var prev := UiKit.button(self, "<", Vector2(90, 360), Vector2(100, 120), 48, false)
 	prev.pressed.connect(func() -> void: _move(-1))
-	var nxt := _button(">", Vector2(Consts.GAME_W - 150, 460), Vector2(110, 120), 50)
+	var nxt := UiKit.button(self, ">", Vector2(570, 360), Vector2(100, 120), 48, false)
 	nxt.pressed.connect(func() -> void: _move(1))
 
-	_name_label = _label("", Vector2(0, 730), 44, Color(0.10, 0.13, 0.18), true)
-	_rarity_label = _label("", Vector2(0, 786), 30, Color(0.5, 0.5, 0.5), true)
-	_status_label = _label("", Vector2(0, 828), 26, Color(0.30, 0.40, 0.52), true)
+	# details panel on the right
+	var panel := UiKit.panel(self, Vector2(730, 160), Vector2(470, 300), UiKit.PANEL_BG)
+	_name_label = UiKit.label(panel, "", Vector2(0, 26), 44, UiKit.INK, 470)
+	_rarity_label = UiKit.label(panel, "", Vector2(0, 96), 28, Color(0.5, 0.5, 0.5), 470)
+	_status_label = UiKit.label(panel, "", Vector2(0, 150), 24, Color(0.30, 0.40, 0.52), 470)
+	UiKit.label(panel, "Crash into a car on the road", Vector2(0, 212), 20, Color(0.48, 0.55, 0.64), 470)
+	UiKit.label(panel, "to add it to your garage.", Vector2(0, 238), 20, Color(0.48, 0.55, 0.64), 470)
 
-	var select_hint := _button("SELECT", Vector2(Consts.GAME_W / 2 - 180, 900), Vector2(360, 96), 38)
-	select_hint.pressed.connect(_on_select)
-	_select_btn = select_hint
+	_select_btn = UiKit.button(self, "SELECT", Vector2(780, 490), Vector2(370, 88), 38)
+	_select_btn.pressed.connect(_on_select)
 
-	var back := _button("BACK", Vector2(Consts.GAME_W / 2 - 180, 1020), Vector2(360, 100), 44)
+	var back := UiKit.button(self, "BACK", Vector2(780, 598), Vector2(370, 76), 32, false)
 	back.pressed.connect(_on_back)
 
+	UiKit.label(self, "< >  browse      ENTER  select", Vector2(0, 688), 18, Color(0.32, 0.42, 0.54), Consts.GAME_W)
+
+	UiKit.vignette(self, 0.14)
 	_refresh()
-
-var _select_btn: Button
-
-func _title(text: String, y: float, fsize: int, color: Color) -> void:
-	var l := _label(text, Vector2(0, y), fsize, color, true)
-	l.add_theme_color_override("font_outline_color", Color(1, 1, 1, 0.6))
-	l.add_theme_constant_override("outline_size", 4)
-
-func _label(text: String, pos: Vector2, fsize: int, color: Color, centered: bool) -> Label:
-	var l := Label.new()
-	l.text = text
-	l.position = pos
-	l.add_theme_font_size_override("font_size", fsize)
-	l.add_theme_color_override("font_color", color)
-	if centered:
-		l.size = Vector2(Consts.GAME_W, fsize + 10)
-		l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	add_child(l)
-	return l
-
-func _button(text: String, pos: Vector2, size: Vector2, fsize: int) -> Button:
-	var b := Button.new()
-	b.text = text
-	b.position = pos
-	b.size = size
-	b.custom_minimum_size = size
-	b.add_theme_font_size_override("font_size", fsize)
-	add_child(b)
-	return b
 
 func _move(dir: int) -> void:
 	var n := CarCatalog.cars().size()
@@ -98,10 +82,10 @@ func _on_back() -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		match event.keycode:
-			KEY_LEFT, KEY_A: _move(-1)
+			KEY_LEFT, KEY_A, KEY_Q: _move(-1)
 			KEY_RIGHT, KEY_D: _move(1)
 			KEY_ENTER, KEY_SPACE: _on_select()
-			KEY_ESCAPE: _on_back()
+			KEY_B, KEY_BACKSPACE: _on_back()
 
 func _refresh() -> void:
 	var cars := CarCatalog.cars()

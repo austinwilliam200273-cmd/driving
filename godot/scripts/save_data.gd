@@ -61,6 +61,23 @@ static func set_muted(v: bool) -> void:
 static func apply_mute() -> void:
 	AudioServer.set_bus_mute(0, get_muted())
 
+# --- progression ---
+static func get_runs() -> int:
+	return int(_cfg().get_value("progress", "runs", 0))
+
+static func inc_runs() -> void:
+	var c := _cfg()
+	c.set_value("progress", "runs", int(c.get_value("progress", "runs", 0)) + 1)
+	c.save(PATH)
+
+static func get_mission_index() -> int:
+	return int(_cfg().get_value("progress", "mission", 0))
+
+static func advance_mission() -> void:
+	var c := _cfg()
+	c.set_value("progress", "mission", int(c.get_value("progress", "mission", 0)) + 1)
+	c.save(PATH)
+
 # --- controls ---
 static func get_arrows() -> bool:
 	return bool(_cfg().get_value("controls", "arrows", true))
